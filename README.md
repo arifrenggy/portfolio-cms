@@ -63,3 +63,4 @@ routes/web.php               → Routing publik
 - Akses panel dikontrol kolom `is_admin` pada tabel users — hanya user dengan `is_admin = true` yang bisa masuk
 - Gambar disimpan di `storage/app/public` (diakses via symlink `public/storage`)
 - Tests: `php artisan test` (7 test, mencakup halaman publik & proteksi panel)
+- [Panduan Setup Lokal](SETUP.md) — clone, install, & konfigurasi
