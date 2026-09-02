@@ -6,49 +6,52 @@
     <meta name="description" content="{{ $project->description }}">
     <title>{{ $project->title }} — {{ $settings->hero_name }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/site.css') }}">
 </head>
 <body>
 
 <header class="navbar">
     <nav class="nav-inner">
-        <a href="{{ url('/') }}" class="logo">{{ \Illuminate\Support\Str::of($settings->hero_name)->substr(0, 2)->upper() }}<span>.</span></a>
+        <a href="{{ url('/') }}" class="logo">{{ strtolower(\Illuminate\Support\Str::of($settings->hero_name)->before(' ')->substr(0, 1)) }}{{ strtolower(\Illuminate\Support\Str::of($settings->hero_name)->afterLast(' ')->substr(0, 1)) }}<span>.dev</span></a>
         <ul class="nav-links">
             <li><a href="{{ url('/') }}" class="btn btn-outline btn-sm">&larr; Kembali</a></li>
         </ul>
     </nav>
 </header>
 
-<section class="section" style="padding-top: 140px;">
-    <h2 class="section-title reveal">{{ $project->title }}</h2>
+<div class="breadcrumb">
+    <a href="{{ url('/') }}">~</a><span class="sep">/</span><span>proyek</span><span class="sep">/</span><span>{{ $project->slug }}</span>
+</div>
+
+<section class="detail-content">
+    <h1 class="detail-title reveal">{{ $project->title }}</h1>
     @if($project->tags)
-        <div class="project-tags reveal" style="justify-content: center;">
+        <div class="project-tags reveal">
             @foreach($project->tags as $tag)
                 <span class="tag">{{ $tag }}</span>
             @endforeach
         </div>
     @endif
-    <div class="about-grid">
-        <div class="about-text reveal">
-            <p>{{ $project->description }}</p>
-            {!! $project->content !!}
+    @if($project->image_path)
+        <div class="detail-image reveal">
+            <img src="{{ \Illuminate\Support\Facades\Storage::url($project->image_path) }}" alt="{{ $project->title }}">
         </div>
-        @if($project->image_path)
-            <div class="about-image reveal">
-                <img src="{{ \Illuminate\Support\Facades\Storage::url($project->image_path) }}" alt="{{ $project->title }}">
-            </div>
-        @endif
+    @endif
+    <div class="detail-text reveal">
+        <p>{{ $project->description }}</p>
+        {!! $project->content !!}
     </div>
     @if($project->link)
         <div class="cv-cta reveal">
-            <a href="{{ $project->link }}" target="_blank" rel="noopener" class="btn btn-primary">Kunjungi Proyek &rarr;</a>
+            <a href="{{ $project->link }}" target="_blank" rel="noopener" class="btn btn-primary">&gt; Kunjungi Proyek</a>
         </div>
     @endif
 </section>
 
 <footer class="footer">
-    <p>&copy; {{ date('Y') }} {{ $settings->hero_name }}. Semua hak dilindungi.</p>
+    <p>&copy; <span id="year">{{ date('Y') }}</span> {{ $settings->hero_name }} — dibuat dengan <span class="heart">Laravel</span> + <span class="heart">Filament</span> <span class="heart">&lt;3</span></p>
 </footer>
 
 <script src="{{ asset('js/site.js') }}"></script>
